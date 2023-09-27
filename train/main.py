@@ -19,10 +19,11 @@ from torch.cuda.amp import autocast as autocast
 from torch.cuda.amp import GradScaler as GradScaler
 
 import sys
+import pdb
 sys.path.append("..")
 
-from train.dataset import dentalphase
-from train.transform import Relabel, ToLabel
+from dataset import dentalphase
+from transform import Relabel, ToLabel
 from shutil import copyfile
 
 NUM_CLASSES = 18
@@ -55,6 +56,7 @@ def train(args, model, enc=False):
 
     best_acc = 1
 
+    pdb.set_trace()
     #TODO: calculate weights by processing dataset histogram (now its being set by hand from the torch values)
     weight = torch.ones(NUM_CLASSES)
     if (enc):
@@ -110,7 +112,7 @@ def train(args, model, enc=False):
     loss_func = CrossEntropyLoss2d(weight)
     print(type(loss_func))
 
-    savedir = f'../save/{args.savedir}'
+    savedir = f'C:/Users/CQG/Desktop/experience/00code/HiPhase/save/{args.savedir}'
     if (enc):
         automated_log_path = savedir + "/automated_log_encoder.txt"
         modeltxtpath = savedir + "/model_encoder.txt"
@@ -129,6 +131,7 @@ def train(args, model, enc=False):
     scaler = GradScaler()
 
     start_epoch = 1
+    pdb.set_trace()
     if args.resume:
         # Must load weights, optimizer, epoch, scaler and best value.
         if args.resumeencoder:
@@ -179,6 +182,7 @@ def train(args, model, enc=False):
         for step, (images, labels) in enumerate(loader):
 
             start_time = time.time()
+            
             if args.cuda:
                 images = images.cuda()
                 labels = labels.cuda()
@@ -190,7 +194,8 @@ def train(args, model, enc=False):
             with autocast():
                 outputs = model(inputs, only_encode=enc)
                 loss = loss_func(outputs, targets[:, 0])
-
+            
+            pdb.set_trace()
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
@@ -219,6 +224,7 @@ def train(args, model, enc=False):
 
                 inputs = Variable(images)
                 targets = Variable(labels)
+                pdb.set_trace()
                 outputs = model(inputs, only_encode=enc)
                 loss = loss_func(outputs, targets[:, 0])
                 epoch_loss_val.append(loss.item())
@@ -294,23 +300,23 @@ def save_checkpoint(state, is_best, filenameCheckpoint, filenameBest):
         torch.save(state, filenameBest)
 
 def main(args):
-    savedir = f'../save/{args.savedir}'
+    savedir = f'C:/Users/CQG/Desktop/experience/00code/HiPhase/save/{args.savedir}'
 
     if not os.path.exists(savedir):
         os.makedirs(savedir)
 
     with open(savedir + '/opts.txt', "w") as myfile:
         myfile.write(str(args))
-
+    
     #Load Model
-    assert os.path.exists(args.model + ".py"), "Error: model definition not found"
+    assert os.path.exists("./train/" + args.model + ".py"), "Error: model definition not found"
     model_file = importlib.import_module(args.model)
     model = model_file.Net(NUM_CLASSES)
-    copyfile(args.model + ".py", savedir + '/' + args.model + ".py")
+    copyfile("./train/" + args.model + ".py", savedir + '/' + args.model + ".py")
 
     if args.cuda:
         model = torch.nn.DataParallel(model).cuda()
-
+    
     #Train
     if (not args.decoder):
         print("========== ENCODER TRAINING ===========")
@@ -327,12 +333,12 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--cuda', action='store_true', default=True)
     parser.add_argument('--model', default="HiPhase")
-    parser.add_argument('--datadir', default="D:/BaiduNetdiskDownload/HiPhase/datasets/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="F:/CQG_data/SCU-Phase/SCU-Phase-Ready/")
     parser.add_argument('--num-epochs', type=int, default=120)
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--batch-size', type=int, default=4)
     parser.add_argument('--steps-loss', type=int, default=100)
-    parser.add_argument('--savedir',default="HiPhase_experi/")
+    parser.add_argument('--savedir',default="HiPhase_experi0926/")
     parser.add_argument('--decoder', action='store_true')
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--resumeencoder', action='store_true') #resume from encoder

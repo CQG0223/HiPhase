@@ -15,9 +15,9 @@ from torchvision.transforms import ToTensor, ToPILImage
 import sys
 sys.path.append("..")
 
-from eval.dataset import dentalphase
-from eval.HiPhase import Net
-from eval.transform import Relabel, ToLabel, Colorize
+from dataset import dentalphase
+from HiPhase import Net
+from transform import Relabel, ToLabel, Colorize
 
 NUM_CLASSES = 18
 
@@ -85,11 +85,11 @@ def main(args):
 if __name__ == '__main__':
     parser = ArgumentParser()
 
-    parser.add_argument('--loadDir', default="D:/BaiduNetdiskDownload/HiPhase/code/save/HiPhase_experi_old/")
+    parser.add_argument('--loadDir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/save/HiPhase_experi/")
     parser.add_argument('--loadWeights', default="model_best.pth")
     parser.add_argument('--loadModel', default="HiPhase.py")
     parser.add_argument('--subset', default="test")  # can be val, test, train, demoSequence
-    parser.add_argument('--datadir', default="D:/BaiduNetdiskDownload/HiPhase/datasets/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/data/SCU-Phase-Ready/")
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--cpu', action='store_true')
