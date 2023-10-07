@@ -12,7 +12,6 @@ class Relabel:
         tensor[tensor == self.olabel] = self.nlabel
         return tensor
 
-
 class ToLabel:
 
     def __call__(self, image):

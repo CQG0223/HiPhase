@@ -4,7 +4,7 @@ import torch.nn.init as init
 import torch.nn.functional as F
 
 class DownsamplerBlock (nn.Module): #Downsampling
-    def __init__(self, ninput, noutput):
+    def __init__(self, ninput, noutput): #1,16
         super().__init__()
 
         self.conv = nn.Conv2d(ninput, noutput-ninput, (3, 3), stride=2, padding=1, bias=True)
@@ -83,10 +83,10 @@ class Encoder(nn.Module):
 
         for layer in self.layers:
             output = layer(output)
-
+        
         if predict:
             output = self.output_conv(output)
-
+        
         return output
 
 
