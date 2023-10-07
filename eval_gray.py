@@ -79,7 +79,7 @@ def main(args):
 
         newTensor = torch.cat((outputTensor[0,500:501,:],labels[0,0,500:501,:]),dim=0).cpu().detach().numpy()
 
-        logger.log(losses={'train_loss':newTensor},images={'Out':outputTensor})
+        logger.log(losses={'train_loss':newTensor},images={'Out':outputTensor,'target':labels})
         '''
         filenameSave = "./HiPhase_expri_gray/" + filename[0].split("leftImg8bit/")[1]
         os.makedirs(os.path.dirname(filenameSave), exist_ok=True)
