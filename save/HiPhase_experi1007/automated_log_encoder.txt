@@ -1,3 +1,0 @@
-Epoch		Train-loss		Val-loss		learningRate
-1		0.4906		0.3658		0.00050000
-2		0.2965		0.2447		0.00049625

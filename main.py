@@ -28,7 +28,7 @@ from shutil import copyfile
 from Logger.Logger import Logger
 from train.HiPhase import Net
 
-NUM_CLASSES = 18
+NUM_CLASSES = 35
 
 image_transform = ToPILImage()
 class MyCoTransform(object):
@@ -81,6 +81,7 @@ def train(args, model, enc=False):
         weight[15] = 1.8414715725942
         weight[16] = 5.9995884343957
         weight[17] = 0.1155389693794
+
     else:
         weight[0] = 2.8400409575571
         weight[1] = 2.2152681284429
@@ -335,12 +336,13 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--cuda', action='store_true', default=True)
     parser.add_argument('--model', default="HiPhase")
-    parser.add_argument('--datadir', default="F:/CQG_data/SCU-Phase/SCU-Phase-Ready/")
-    parser.add_argument('--num-epochs', type=int, default=10)
+    #parser.add_argument('--datadir', default="F:/CQG_data/SCU-Phase/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/SCU-Phase/SCU-Phase-Ready/")
+    parser.add_argument('--num-epochs', type=int, default=120)
     parser.add_argument('--num-workers', type=int, default=0)
-    parser.add_argument('--batch-size', type=int, default=4)
-    parser.add_argument('--steps-loss', type=int, default=100)
-    parser.add_argument('--savedir',default="HiPhase_experi1007/")
+    parser.add_argument('--batch-size', type=int, default=2)
+    parser.add_argument('--steps-loss', type=int, default=2)
+    parser.add_argument('--savedir',default="MyDataSet20231008/")
     parser.add_argument('--decoder', action='store_true')
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--resumeencoder', action='store_true') #resume from encoder

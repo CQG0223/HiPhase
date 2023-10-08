@@ -2,7 +2,7 @@ import os
 from PIL import Image
 from torch.utils.data import Dataset
 
-EXTENSIONS = ['.jpg', '.png']
+EXTENSIONS = ['.jpg', '.png','.bmp']
 
 def load_image(file):
     return Image.open(file)
@@ -11,7 +11,9 @@ def is_image(filename):
     return any(filename.endswith(ext) for ext in EXTENSIONS)
 
 def is_label(filename):
-    return filename.endswith("_labelTrainIds.png")
+    #return filename.endswith("_labelTrainIds.png")
+    return any(filename.endswith(ext) for ext in EXTENSIONS)
+
 
 def image_path(root, basename, extension):
     return os.path.join(root, f'{basename}{extension}')
@@ -47,13 +49,23 @@ class dentalphase(Dataset):
         with open(image_path_city(self.labels_root, filenameGt), 'rb') as f:
             label = load_image(f).convert('L')
 
+        image,label = self._sync_transform(image,label)
         if self.input_transform is not None:
             image = self.input_transform(image)
         if self.target_transform is not None:
             label = self.target_transform(label)
-
+        
         return image, label, filename, filenameGt
 
     def __len__(self):
         return len(self.filenames)
+    
+    def _sync_transform(self,img,mask):
+        crop_size = 1024
+        w, h = img.size
+        x1 = w - 1.5*crop_size
+        y1 = h - 1.5*crop_size
+        img = img.crop((x1, y1, x1 + crop_size, y1 + crop_size))
+        mask = mask.crop((x1, y1, x1 + crop_size, y1 + crop_size))
+        return img, mask
 

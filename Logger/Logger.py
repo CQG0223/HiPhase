@@ -1,8 +1,9 @@
 from visdom import Visdom
 import time
 import numpy as np
+import json
+import csv
 
-import pdb
 class Logger(object):
     def __init__(self):
         '''
@@ -19,7 +20,7 @@ class Logger(object):
         self.loss_windows = {} #保存loss图的字典组合
         self.image_windows = {} #保存生成图的字典集合
     
-    def log(self,losses = None,images = None):
+    def log(self,save = False,losses = None,images = None):
         self.mean_preiod += (time.time() - self.prev_time)
         self.prev_time = time.time()
         
@@ -58,6 +59,7 @@ class Logger(object):
                 # 跑完一个epoch，更新一下下面参数
                 self.epoch += 1
                 self.batch = 1
+                
             else:
                 self.batch += 1
 
@@ -67,3 +69,25 @@ class Logger(object):
         res = (tensor - min) / (max - min)
         image_numpy = res[0].cpu().float().numpy()
         return image_numpy.astype(imtype)
+    
+    def _saveVisdomData(self,win,env,fileName,mode = 'w'):
+        '''
+		模型训练完或中断时,可以先将前阶段visdom的数据保存到本地
+		arg:
+			win: 窗口名称
+			env: 环境名称
+			fileName: 保存文件路径
+			mode: 文件保存格式, 'w'表示重写. 'a'表示添加在末端
+	    '''
+        assert mode == 'w' or mode == 'a'
+        viz = Visdom()
+        win_data = viz.get_window_data(win,env)
+        pre_data = json.loads(win_data)
+        x = pre_data["content"]["data"][0]["x"] # x坐标的值
+        y1 = pre_data["content"]["data"][0]["y"] # 曲线1
+        y2 = pre_data["content"]["data"][1]["y"] # 曲线2
+        assert len(x)==len(y1)==len(y2)
+        with open(fileName,mode) as f:
+            writer = csv.writer(f)
+            for i in range(len(x)):
+                writer.writerow(x[i],y1[i],y2[i])

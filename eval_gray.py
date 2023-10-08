@@ -20,7 +20,7 @@ from eval.HiPhase import Net
 from eval.transform import Relabel, ToLabel, Colorize
 from Logger.Logger import Logger
 
-NUM_CLASSES = 18
+NUM_CLASSES = 35
 
 image_transform = ToPILImage()
 input_transform_cityscapes = Compose([
@@ -80,25 +80,24 @@ def main(args):
         newTensor = torch.cat((outputTensor[0,500:501,:],labels[0,0,500:501,:]),dim=0).cpu().detach().numpy()
 
         logger.log(losses={'train_loss':newTensor},images={'Out':outputTensor,'target':labels})
+        print(step)
         '''
         filenameSave = "./HiPhase_expri_gray/" + filename[0].split("leftImg8bit/")[1]
         os.makedirs(os.path.dirname(filenameSave), exist_ok=True)
         label = label.numpy()
         label_save = Image.fromarray(np.uint8(np.round(label)))
         label_save.save(filenameSave)
-
         print(step, filenameSave)
         '''
-
 
 if __name__ == '__main__':
     parser = ArgumentParser()
 
-    parser.add_argument('--loadDir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/save/HiPhase_experi/")
+    parser.add_argument('--loadDir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/save/MyDataSet20231008/")
     parser.add_argument('--loadWeights', default="model_best.pth")
     parser.add_argument('--loadModel', default="HiPhase.py")
     parser.add_argument('--subset', default="test")  # can be val, test, train, demoSequence
-    parser.add_argument('--datadir', default="F:/CQG_data/SCU-Phase/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/SCU-Phase/SCU-Phase-Ready/")
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--cpu', action='store_true')
