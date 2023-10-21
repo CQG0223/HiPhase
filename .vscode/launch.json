@@ -8,7 +8,7 @@
             "name": "Python: NewConsole",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/eval_gray.py",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

@@ -28,7 +28,7 @@ from shutil import copyfile
 from Logger.Logger import Logger
 from train.HiPhase import Net
 
-NUM_CLASSES = 35
+NUM_CLASSES = 40
 
 image_transform = ToPILImage()
 class MyCoTransform(object):
@@ -337,12 +337,12 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', action='store_true', default=True)
     parser.add_argument('--model', default="HiPhase")
     #parser.add_argument('--datadir', default="F:/CQG_data/SCU-Phase/SCU-Phase-Ready/")
-    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/SCU-Phase/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/newProcessed/")
     parser.add_argument('--num-epochs', type=int, default=120)
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--batch-size', type=int, default=2)
     parser.add_argument('--steps-loss', type=int, default=2)
-    parser.add_argument('--savedir',default="MyDataSet20231008/")
+    parser.add_argument('--savedir',default="MyDataSet20231020/")
     parser.add_argument('--decoder', action='store_true')
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--resumeencoder', action='store_true') #resume from encoder

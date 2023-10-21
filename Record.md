@@ -28,4 +28,4 @@
 
 ![image-20231008113415017](./Resourse/20231008_4.png)
 
-将attention想法引入该网络
+将attention引入该网络

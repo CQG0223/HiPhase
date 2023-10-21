@@ -1,0 +1,1 @@
+Namespace(cuda=True, model='HiPhase', datadir='F:/CQG_data/SL3DR/newProcessed/', num_epochs=120, num_workers=0, batch_size=2, steps_loss=2, savedir='MyDataSet20231020/', decoder=False, resume=False, resumeencoder=False)

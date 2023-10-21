@@ -20,7 +20,7 @@ from eval.HiPhase import Net
 from eval.transform import Relabel, ToLabel, Colorize
 from Logger.Logger import Logger
 
-NUM_CLASSES = 35
+NUM_CLASSES = 40
 
 image_transform = ToPILImage()
 input_transform_cityscapes = Compose([
@@ -93,11 +93,11 @@ def main(args):
 if __name__ == '__main__':
     parser = ArgumentParser()
 
-    parser.add_argument('--loadDir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/save/MyDataSet20231008/")
+    parser.add_argument('--loadDir', default="C:/Users/CQG/Desktop/experience/00code/HiPhase/save/MyDataSet20231020/")
     parser.add_argument('--loadWeights', default="model_best.pth")
     parser.add_argument('--loadModel', default="HiPhase.py")
     parser.add_argument('--subset', default="test")  # can be val, test, train, demoSequence
-    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/SCU-Phase/SCU-Phase-Ready/")
+    parser.add_argument('--datadir', default="F:/CQG_data/SL3DR/newProcessed/")
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--cpu', action='store_true')
